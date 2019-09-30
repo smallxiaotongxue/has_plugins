@@ -55,7 +55,11 @@
       "plugin:vue/essential",
       "@vue/standard"
     ],
-    "rules": {},
+    "rules": {
+      "comma-dangle": "off",
+      "semi": "off",
+      "no-trailing-spaces": "off"
+    },
     "parserOptions": {
       "parser": "babel-eslint"
     },
