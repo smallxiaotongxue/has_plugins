@@ -7,16 +7,16 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'home',
+      redirect: '/navigator',
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
       component: () => import(/* webpackChunkName: "home" */ './views/Home.vue'),
       children: [
         {
-          path: '',
-          name: 'main',
-          // route level code-splitting
-          // this generates a separate chunk (about.[hash].js) for this route
-          // which is lazy-loaded when the route is visited.
-          component: () => import(/* webpackChunkName: "home" */ './views/main/index.vue')
+          path: '/navigator',
+          name: 'navigatorMessage',
+          component: () => import(/* webpackChunkName: "home" */ './views/navigator/navigator-message.vue')
         }
       ]
     },

@@ -58,7 +58,10 @@
     "rules": {
       "comma-dangle": "off",
       "semi": "off",
-      "no-trailing-spaces": "off"
+      "no-trailing-spaces": "off",
+      "space-before-function-paren": "off",
+      "spaced-comment": "off",
+      "quotes": "off"
     },
     "parserOptions": {
       "parser": "babel-eslint"
