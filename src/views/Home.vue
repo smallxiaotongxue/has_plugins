@@ -26,7 +26,7 @@
             </el-menu-item>
           </el-menu>
         </el-aside>
-        <el-main>
+        <el-main class="home-main">
           <transition name="fade" mode="out-in">
             <router-view></router-view>
           </transition>
@@ -56,6 +56,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  .home-page {
+
+  }
+
   .header {
     background: #545c64;
 
@@ -75,7 +79,13 @@ export default {
   }
 
   .aside {
-    height: calc( 100vh - 60px);
+    height: calc( 100vh - 61px);
+    overflow: auto;
     background: #545c64;
+  }
+
+  .home-main {
+    height: calc( 100vh - 61px);
+    overflow: auto;
   }
 </style>
