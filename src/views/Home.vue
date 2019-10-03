@@ -3,29 +3,33 @@
     <el-container>
       <el-header class="header">
         <div class="header-wrap">
-          <div class="header-title">插件查询</div>
+          <el-button type="primary" icon="el-icon-s-fold" circle @click="handleCollapse"></el-button>
+          <div class="header-title">浏览器插件</div>
         </div>
       </el-header>
       <el-container>
-        <el-aside class="aside" width="200px">
+        <el-scrollbar class="container-left" wrap-class="container-left-wrap" :class="{'slide-hide': isCollapse}">
           <el-menu
-            default-active="1"
+            class="menu-class"
+            :default-active="onRoutes"
             @open="handleOpen"
             @close="handleClose"
             background-color="#545c64"
             text-color="#fff"
             active-text-color="#ffd04b"
+            :collapse="isCollapse"
           >
-            <el-menu-item index="1">
-              <i class="el-icon-menu"></i>
-              <span slot="title">浏览器信息</span>
-            </el-menu-item>
-            <el-menu-item index="2">
-              <i class="el-icon-document"></i>
-              <span slot="title">PC信息 (IE)</span>
-            </el-menu-item>
+            <template v-for="(item, index) in routerList">
+              <router-link :key="index" :to="item.path">
+                <el-menu-item :index="item.path">
+                  <i :class="item.icon"></i>
+                  <span slot="title">{{item.title}}</span>
+                </el-menu-item>
+              </router-link>
+            </template>
           </el-menu>
-        </el-aside>
+        </el-scrollbar>
+
         <el-main class="home-main">
           <transition name="fade" mode="out-in">
             <router-view></router-view>
@@ -38,13 +42,28 @@
 
 <script>
 // @ is an alias to /src
+import routerList from '../dictionary/routerList';
 
 export default {
   name: 'home',
+  data: function () {
+    return {
+      isCollapse: false,
+      routerList: routerList
+    };
+  },
+  computed: {
+    onRoutes () {
+      return this.$route.path
+    },
+  },
   components: {
 
   },
   methods: {
+    handleCollapse () {
+      this.isCollapse = !this.isCollapse;
+    },
     handleOpen () {
 
     },
@@ -54,6 +73,12 @@ export default {
   }
 }
 </script>
+
+<style lang="css" scoped>
+  .container-left .menu-class {
+    border-right: none;
+  }
+</style>
 
 <style lang="scss" scoped>
   .home-page {
@@ -66,11 +91,11 @@ export default {
     .header-wrap {
       display: flex;
       align-items: center;
-      justify-content: space-between;
       height: 60px;
       line-height: 60px;
 
       .header-title {
+        padding: 20px;
         font-size: 18px;
         font-weight: bold;
         color: #ffffff;
@@ -78,10 +103,19 @@ export default {
     }
   }
 
-  .aside {
+  .container-left {
     height: calc( 100vh - 61px);
-    overflow: auto;
     background: #545c64;
+    transition: left 3s ease-in-out;
+    flex: 0 0 auto;
+  }
+
+  .container-left-wrap {
+    overflow-x: hidden !important;
+  }
+
+  .container-left:not(.slide-hide) {
+    width: 200px;
   }
 
   .home-main {

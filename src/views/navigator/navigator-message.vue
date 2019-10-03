@@ -8,9 +8,9 @@
           highlight-current-row
           @current-change="handleCurrentChange"
           style="width: 100%">
-          <el-table-column type="index" width="60"></el-table-column>
-          <el-table-column property="name" label="属性名称" width="150"></el-table-column>
-          <el-table-column property="detail" label="属性详情" width="auto"></el-table-column>
+          <el-table-column fixed type="index" width="60"></el-table-column>
+          <el-table-column property="name" fixed label="属性名称" width="250"></el-table-column>
+          <el-table-column property="detail" label="属性详情" min-width="600"></el-table-column>
           <el-table-column property="remark" label="备注" width="200"></el-table-column>
         </el-table>
       </el-tab-pane>
@@ -18,21 +18,24 @@
         <el-alert
           title="插件信息"
           type="success"
-          :description="`当前浏览器插件数量为 3 个`"
-          show-icon>
+          :description="tips"
+        >
         </el-alert>
 
-        <el-table
-          border
-          :data="pluginsData"
-          highlight-current-row
-          @current-change="handleCurrentChange"
-          style="width: 100%">
-          <el-table-column type="index" width="60"></el-table-column>
-          <el-table-column property="name" label="属性名称" width="150"></el-table-column>
-          <el-table-column property="detail" label="属性详情" width="auto"></el-table-column>
-          <el-table-column property="remark" label="备注" width="200"></el-table-column>
-        </el-table>
+        <div class="plugin-table" style="margin-top: 10px;">
+          <el-table
+            border
+            :data="pluginsData"
+            highlight-current-row
+            @current-change="handleCurrentChange"
+            style="width: 100%">
+            <el-table-column fixed type="index" width="60" align="center"></el-table-column>
+            <el-table-column property="name" fixed label="插件名称" width="250"></el-table-column>
+            <el-table-column property="filename" label="文件名称" width="auto"></el-table-column>
+            <el-table-column property="description" label="插件描述" width="400"></el-table-column>
+            <el-table-column property="version" label="版本" width="200"></el-table-column>
+          </el-table>
+        </div>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -43,7 +46,13 @@ export default {
   name: 'navigator-message',
   data: function () {
     return {
-      navigatorData: []
+      navigatorData: [],
+      pluginsData: [],
+    }
+  },
+  computed: {
+    tips () {
+      return `当前浏览器插件数量为 ${window.navigator.plugins.length || '0'} 个`;
     }
   },
   mounted () {
@@ -51,7 +60,8 @@ export default {
   },
   methods: {
     initPage () {
-      this.getAllInfo()
+      this.getAllInfo();
+      this.getPluginInfo();
     },
     handleCurrentChange () {
 
@@ -86,6 +96,17 @@ export default {
       }
 
       return undefined;
+    },
+    getPluginInfo () {
+      let L = navigator.plugins.length;
+      for (let i = 0; i < L; i++) {
+        this.pluginsData.push({
+          name: navigator.plugins[i].name || '',
+          filename: navigator.plugins[i].filename || '',
+          description: navigator.plugins[i].description || '',
+          version: navigator.plugins[i].version || '',
+        })
+      }
     },
     getAllInfo () {
       let appName = navigator.appName // 浏览器的正式名称
@@ -298,7 +319,6 @@ export default {
     },
     /*
      * 检测是否已安装指定插件
-     *
      * pluginName 插件名称
      */
     _checkPlugins (pluginName) {
