@@ -3,7 +3,6 @@
     <el-tabs type="border-card">
       <el-tab-pane label="浏览器信息">
         <el-table
-          ref="singleTable"
           border
           :data="navigatorData"
           highlight-current-row
@@ -16,7 +15,24 @@
         </el-table>
       </el-tab-pane>
       <el-tab-pane label="浏览器插件信息">
+        <el-alert
+          title="插件信息"
+          type="success"
+          :description="`当前浏览器插件数量为 3 个`"
+          show-icon>
+        </el-alert>
 
+        <el-table
+          border
+          :data="pluginsData"
+          highlight-current-row
+          @current-change="handleCurrentChange"
+          style="width: 100%">
+          <el-table-column type="index" width="60"></el-table-column>
+          <el-table-column property="name" label="属性名称" width="150"></el-table-column>
+          <el-table-column property="detail" label="属性详情" width="auto"></el-table-column>
+          <el-table-column property="remark" label="备注" width="200"></el-table-column>
+        </el-table>
       </el-tab-pane>
     </el-tabs>
   </div>
