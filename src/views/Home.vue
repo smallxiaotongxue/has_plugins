@@ -106,8 +106,9 @@ export default {
   .container-left {
     height: calc( 100vh - 61px);
     background: #545c64;
-    transition: left 3s ease-in-out;
+    transition: all 0.3s ease-in-out;
     flex: 0 0 auto;
+    width: 60px;
   }
 
   .container-left-wrap {
