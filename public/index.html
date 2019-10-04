@@ -11,7 +11,69 @@
     <noscript>
       <strong>We're sorry but has_plugins doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
+    <a id="lowVersionLink" class="low-version-link" href="./low-versions/check.html" style="display: none">低版本浏览器使用</a>
     <div id="app"></div>
     <!-- built files will be auto injected -->
+
+    <script>
+      function getBrowserInfo () {
+        //浏览器类型及版本
+        var message = {};
+        var agent = navigator.userAgent.toLowerCase();
+        var regStr_ff = /firefox\/[\d.]+/gi
+        var regStr_chrome = /chrome\/[\d.]+/gi
+        var regStr_saf = /safari\/[\d.]+/gi
+        var isIE = agent.indexOf('compatible') > -1 && agent.indexOf('msie' > -1) //判断是否IE<11浏览器
+        var isEdge = agent.indexOf('edge') > -1 && !isIE //判断是否IE的Edge浏览器
+        var isIE11 = agent.indexOf('trident') > -1 && agent.indexOf('rv:11.0') > -1
+        if (isIE) {
+          var reIE = new RegExp('msie (\\d+\\.\\d+);')
+          reIE.test(agent)
+          var fIEVersion = parseFloat(RegExp['$1'])
+          if (fIEVersion === 7) {
+            message = 'IE/7'
+          } else if (fIEVersion === 8) {
+            message = 'IE/8'
+          } else if (fIEVersion === 9) {
+            message = 'IE/9'
+          } else if (fIEVersion === 10) {
+            message = 'IE/10'
+          }
+        } //isIE end
+        if (isIE11) {
+          message = 'IE/11'
+        }
+        //firefox
+        if (agent.indexOf('firefox') > 0) {
+          message = agent.match(regStr_ff)
+        }
+        //Safari
+        if (agent.indexOf('safari') > 0 && agent.indexOf('chrome') < 0) {
+          message = agent.match(regStr_saf)
+        }
+        //Chrome
+        if (agent.indexOf('chrome') > 0) {
+          message = agent.match(regStr_chrome)
+        }
+        // Edge
+        if (isEdge) {
+          message = 'Edge/null'
+        }
+
+        var b_name = (message + "").replace(/[0-9./]/ig, ""); //根据正则将所有数字、‘.’‘/’全部去掉，剩下浏览器名
+        var b_version = parseInt((message + "").replace(/[^0-9.]/ig, "")); // 根据正则将所有非数字全部去掉，剩下版本
+
+        return {
+          name: b_name,
+          version: b_version
+        }
+      }
+
+      var browser = getBrowserInfo();
+      if (browser.name === 'IE' && typeof Number(browser.version) === 'number' && Number(browser.version) < 9) {
+        var el = document.getElementById('lowVersionLink');
+        el.style.display = 'inline-block';
+      }
+    </script>
   </body>
 </html>
