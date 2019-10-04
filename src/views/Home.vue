@@ -5,6 +5,7 @@
         <div class="header-wrap">
           <el-button type="primary" icon="el-icon-s-fold" circle @click="handleCollapse"></el-button>
           <div class="header-title">浏览器插件</div>
+          <div class="about" @click="aboutAlert">关于</div>
         </div>
       </el-header>
       <el-container>
@@ -74,6 +75,11 @@ export default {
 
   },
   methods: {
+    aboutAlert () {
+      this.$alert('若有问题或改进，请联系', '关于', {
+        confirmButtonText: '确定'
+      }).catch(() => {});
+    },
     handleCollapse () {
       this.isCollapse = !this.isCollapse;
     },
@@ -116,9 +122,18 @@ export default {
       line-height: 60px;
 
       .header-title {
+        flex: 1;
         display: inline-block;
         margin-left: 20px;
         font-size: 18px;
+        font-weight: bold;
+        color: #ffffff;
+      }
+
+      .about {
+        cursor: pointer;
+        float: right;
+        font-size: 14px;
         font-weight: bold;
         color: #ffffff;
       }
