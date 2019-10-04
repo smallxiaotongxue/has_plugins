@@ -3,10 +3,7 @@
 
     <el-tabs type="border-card">
       <el-tab-pane label="浏览器信息">
-
-        <div class="top-menu">
-          <el-button type="primary" size="small" round @click="html2canvas('navigatorData')">生成图片</el-button>
-        </div>
+        <create-image target-id="messagePage" image-name="navigatorData"></create-image>
 
         <el-table
           border
@@ -16,14 +13,12 @@
           style="width: 100%">
           <el-table-column type="index" width="60"></el-table-column>
           <el-table-column property="name"  label="属性名称" width="200"></el-table-column>
-          <el-table-column property="detail" label="属性详情" min-width="300"></el-table-column>
+          <el-table-column property="detail" label="属性详情" width="auto"></el-table-column>
           <el-table-column property="remark" label="备注" width="200"></el-table-column>
         </el-table>
       </el-tab-pane>
       <el-tab-pane label="浏览器插件信息">
-        <div class="top-menu">
-          <el-button type="primary" size="small" round @click="html2canvas('pluginsData')">生成图片</el-button>
-        </div>
+        <create-image target-id="messagePage" image-name="pluginsData"></create-image>
 
         <el-alert type="success" title="插件信息" effect="dark" :description="tips" :closable="false"></el-alert>
         <div class="plugin-table" style="margin-top: 10px;">
@@ -36,7 +31,7 @@
             <el-table-column type="index" width="60" align="center"></el-table-column>
             <el-table-column property="name" label="插件名称" width="200"></el-table-column>
             <el-table-column property="filename" label="文件名称" min-width="250"></el-table-column>
-            <el-table-column property="description" label="插件描述" width="150"></el-table-column>
+            <el-table-column property="description" label="插件描述" width="250"></el-table-column>
             <el-table-column property="version" label="版本" width="100"></el-table-column>
           </el-table>
         </div>
@@ -46,7 +41,7 @@
 </template>
 
 <script>
-import html2canvas from 'html2canvas';
+import CreateImage from '../../components/page/create-image'
 
 export default {
   name: 'navigator-message',
@@ -55,6 +50,9 @@ export default {
       navigatorData: [],
       pluginsData: [],
     }
+  },
+  components: {
+    CreateImage
   },
   computed: {
     tips () {
@@ -68,14 +66,6 @@ export default {
     initPage () {
       this.getAllInfo();
       this.getPluginInfo();
-    },
-    html2canvas (name) {
-      html2canvas(document.getElementById('messagePage')).then(function(canvas) {
-        var a = document.createElement("a");
-        a.href = canvas.toDataURL();
-        a.download = name || 'browser-message';
-        a.click();
-      });
     },
     handleCurrentChange () {
 

@@ -138,6 +138,7 @@ export default {
 
   .home-main {
     height: calc( 100vh - 61px);
+    padding-bottom: 20px;
     overflow: auto;
   }
 </style>

@@ -1,9 +1,7 @@
 <template>
   <div class="pc-message" id="pcMessage">
     <div class="message-part">
-      <div class="top-menu">
-        <el-button type="primary" size="small" round @click="html2canvas('navigatorData')">生成图片</el-button>
-      </div>
+      <create-image target-id="pcMessage" image-name="pcData"></create-image>
 
       <el-alert type="success" effect="dark" :closable="false">
         <slot name="title">
@@ -165,31 +163,17 @@
         </el-table>
       </div>
     </div>
-
-    <el-dialog
-      title="提示"
-      :visible.sync="imgVisible"
-      width="70%"
-      :before-close="closeDialog">
-      <div class="image-wrap">
-        <img :src="imgSrc" alt="">
-      </div>
-    </el-dialog>
   </div>
 </template>
 
 <script>
 import * as utils from '../../utils/index'
-import html2canvas from 'html2canvas'
-import FileSaver from 'file-saver'
+import CreateImage from '../../components/page/create-image'
 
 export default {
   name: 'pc-index',
   data: function () {
     return {
-      imgVisible: false,
-      imgSrc: '',
-
       CPU_Info: [],
       SOFT_DISK_Info: [],
       CDROM_Info: [],
@@ -198,6 +182,9 @@ export default {
       RAM_Info: [],
       IP_Info: [],
     }
+  },
+  components: {
+    CreateImage
   },
   created () {
 
@@ -214,68 +201,6 @@ export default {
       this.getMainBoardInfo()
       this.getRAMInfo()
       this.getIPInfo()
-    },
-    closeDialog () {
-      this.imgVisible = false;
-      this.imgSrc = '';
-    },
-    dataURLToBlob (dataURL) {
-      var BASE64_MARKER = ';base64,'
-      var parts
-      var contentType
-      var raw
-
-      if (dataURL.indexOf(BASE64_MARKER) === -1) {
-        parts = dataURL.split(',')
-        contentType = parts[0].split(':')[1]
-        raw = decodeURIComponent(parts[1])
-
-        return new Blob([raw], { type: contentType })
-      }
-
-      parts = dataURL.split(BASE64_MARKER)
-      contentType = parts[0].split(':')[1]
-      raw = window.atob(parts[1])
-      var rawLength = raw.length
-      var uInt8Array = new Uint8Array(rawLength)
-
-      for (var i = 0; i < rawLength; ++i) {
-        uInt8Array[i] = raw.charCodeAt(i)
-      }
-
-      return new Blob([uInt8Array], { type: contentType })
-    },
-    html2canvas (name) {
-      html2canvas(document.getElementById('pcMessage')).then((canvas) => {
-        var a = document.createElement('a');
-        document.body.appendChild(a);
-        var url = canvas.toDataURL();
-        var isSupportDownload = 'download' in document.createElement('a')
-
-        if (!isSupportDownload) {
-          if ('msSaveOrOpenBlob' in navigator) {
-            // Microsoft Edge and Microsoft Internet Explorer 10-11
-            const fileBlob = this.dataURLToBlob(canvas.toDataURL('image/jpeg').replace('image/jpeg', 'image/octet-stream'));
-            const fileName = `${name}.jpg`;
-            FileSaver.saveAs(fileBlob, fileName);
-          } else {
-            // IE9 生成图片展示本地
-            this.imgVisible = true;
-            this.imgSrc = url;
-
-            // a.href = url; // url路径太长不支持
-            // a.target = '_blank';
-            // a.click()
-          }
-        } else {
-          // standard code for Google Chrome, Mozilla Firefox etc
-          a.href = url
-          a.download = name || 'pc-message'
-          a.click()
-        }
-
-        document.body.removeChild(a);
-      })
     },
     getCpuInfo () {
       // eslint-disable-next-line no-undef
