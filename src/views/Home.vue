@@ -91,6 +91,10 @@ export default {
   .container-left .menu-class {
     border-right: none;
   }
+
+  .container-left /deep/ .container-left-wrap {
+    overflow: hidden !important;
+  }
 </style>
 
 <style lang="scss" scoped>
@@ -127,12 +131,8 @@ export default {
     width: 60px;
   }
 
-  .container-left-wrap {
-    overflow-x: hidden !important;
-  }
-
   .container-left:not(.slide-hide) {
-    width: 200px;
+    width: 220px;
   }
 
   .home-main {
