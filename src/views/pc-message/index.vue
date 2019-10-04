@@ -1,169 +1,172 @@
 <template>
-  <div class="pc-message" id="pcMessage">
-    <div class="message-part">
-      <create-image target-id="pcMessage" image-name="pcData"></create-image>
+  <div id="pcMessage">
+    <div style="padding: 20px">
+      <div class="message-part">
+        <create-image target-id="pcMessage" image-name="pcData"></create-image>
 
-      <el-alert type="success" effect="dark" :closable="false">
-        <slot name="title">
-          <p class="table-title">CPU信息</p>
-        </slot>
-      </el-alert>
+        <el-alert type="success" effect="dark" :closable="false">
+          <slot name="title">
+            <p class="table-title">CPU信息</p>
+          </slot>
+        </el-alert>
 
-      <div style="margin-top: 10px;">
-        <el-table
-          border
-          :data="CPU_Info"
-          highlight-current-row
-          @current-change="handleCurrentChange"
-          style="width: 100%">
-          <el-table-column fixed type="index" width="60"></el-table-column>
-          <el-table-column property="ProcessorID" label="CPU序列号"></el-table-column>
-          <el-table-column property="Caption" label="Caption"></el-table-column>
-          <el-table-column property="DeviceID" label="CPU编号"></el-table-column>
-          <el-table-column property="CpuStatus" label="CUP Level"></el-table-column>
-          <el-table-column property="Level" label="CPU可用性"></el-table-column>
-          <el-table-column property="SystemName" label="主机名称"></el-table-column>
-          <el-table-column property="ProcessorType" label="Processor Type"></el-table-column>
-        </el-table>
+        <div style="margin-top: 10px;">
+          <el-table
+            border
+            :data="CPU_Info"
+            highlight-current-row
+            @current-change="handleCurrentChange"
+            style="width: 100%">
+            <el-table-column fixed type="index" width="60"></el-table-column>
+            <el-table-column property="ProcessorID" label="CPU序列号"></el-table-column>
+            <el-table-column property="Caption" label="Caption"></el-table-column>
+            <el-table-column property="DeviceID" label="CPU编号"></el-table-column>
+            <el-table-column property="CpuStatus" label="CUP Level"></el-table-column>
+            <el-table-column property="Level" label="CPU可用性"></el-table-column>
+            <el-table-column property="SystemName" label="主机名称"></el-table-column>
+            <el-table-column property="ProcessorType" label="Processor Type"></el-table-column>
+          </el-table>
+        </div>
       </div>
-    </div>
 
-    <div class="message-part">
-      <el-alert type="info" effect="dark" :closable="false">
-        <slot name="title">
-          <p class="table-title">主板信息</p>
-        </slot>
-      </el-alert>
+      <div class="message-part">
+        <el-alert type="info" effect="dark" :closable="false">
+          <slot name="title">
+            <p class="table-title">主板信息</p>
+          </slot>
+        </el-alert>
 
-      <div style="margin-top: 10px;">
-        <el-table
-          border
-          :data="MAINBOARD_Info"
-          highlight-current-row
-          @current-change="handleCurrentChange"
-          style="width: 100%">
-          <el-table-column fixed type="index" width="60"></el-table-column>
-          <el-table-column property="SerialNumber" label="主板ID"></el-table-column>
-          <el-table-column property="HostingBoard" label="HostingBoard"></el-table-column>
-          <el-table-column property="Manufacturer" label="制造商"></el-table-column>
-          <el-table-column property="PoweredOn" label="是否开启"></el-table-column>
-          <el-table-column property="Product" label="型号"></el-table-column>
-          <el-table-column property="Version" label="版本"></el-table-column>
-        </el-table>
+        <div style="margin-top: 10px;">
+          <el-table
+            border
+            :data="MAINBOARD_Info"
+            highlight-current-row
+            @current-change="handleCurrentChange"
+            style="width: 100%">
+            <el-table-column fixed type="index" width="60"></el-table-column>
+            <el-table-column property="SerialNumber" label="主板ID"></el-table-column>
+            <el-table-column property="HostingBoard" label="HostingBoard"></el-table-column>
+            <el-table-column property="Manufacturer" label="制造商"></el-table-column>
+            <el-table-column property="PoweredOn" label="是否开启"></el-table-column>
+            <el-table-column property="Product" label="型号"></el-table-column>
+            <el-table-column property="Version" label="版本"></el-table-column>
+          </el-table>
+        </div>
       </div>
-    </div>
 
-    <div class="message-part">
-      <el-alert type="error" effect="dark" :closable="false">
-        <slot name="title">
-          <p class="table-title">内存信息</p>
-        </slot>
-      </el-alert>
+      <div class="message-part">
+        <el-alert type="error" effect="dark" :closable="false">
+          <slot name="title">
+            <p class="table-title">内存信息</p>
+          </slot>
+        </el-alert>
 
-      <div style="margin-top: 10px;">
-        <el-table
-          border
-          :data="RAM_Info"
-          highlight-current-row
-          @current-change="handleCurrentChange"
-          style="width: 100%">
-          <el-table-column fixed type="index" width="60"></el-table-column>
-          <el-table-column property="cap" label="内存总量"></el-table-column>
-          <el-table-column property="physicMenCap" label="可用物理内存"></el-table-column>
-        </el-table>
+        <div style="margin-top: 10px;">
+          <el-table
+            border
+            :data="RAM_Info"
+            highlight-current-row
+            @current-change="handleCurrentChange"
+            style="width: 100%">
+            <el-table-column fixed type="index" width="60"></el-table-column>
+            <el-table-column property="cap" label="内存总量"></el-table-column>
+            <el-table-column property="physicMenCap" label="可用物理内存"></el-table-column>
+          </el-table>
+        </div>
       </div>
-    </div>
 
-    <div class="message-part">
-      <el-alert type="error" effect="dark" :closable="false">
-        <slot name="title">
-          <p class="table-title">网络连接信息</p>
-        </slot>
-      </el-alert>
+      <div class="message-part">
+        <el-alert type="error" effect="dark" :closable="false">
+          <slot name="title">
+            <p class="table-title">网络连接信息</p>
+          </slot>
+        </el-alert>
 
-      <div style="margin-top: 10px;">
-        <el-table
-          border
-          :data="IP_Info"
-          highlight-current-row
-          @current-change="handleCurrentChange"
-          style="width: 100%">
-          <el-table-column fixed type="index" width="60"></el-table-column>
-          <el-table-column property="MACAddress" label="MAC地址"></el-table-column>
-          <el-table-column property="IPAddress" label="IP地址"></el-table-column>
-        </el-table>
+        <div style="margin-top: 10px;">
+          <el-table
+            border
+            :data="IP_Info"
+            highlight-current-row
+            @current-change="handleCurrentChange"
+            style="width: 100%">
+            <el-table-column fixed type="index" width="60"></el-table-column>
+            <el-table-column property="MACAddress" label="MAC地址"></el-table-column>
+            <el-table-column property="IPAddress" label="IP地址"></el-table-column>
+          </el-table>
+        </div>
       </div>
-    </div>
 
-    <div class="message-part">
-      <el-alert type="info" effect="dark" :closable="false">
-        <slot name="title">
-          <p class="table-title">软盘信息</p>
-        </slot>
-      </el-alert>
+      <div class="message-part">
+        <el-alert type="info" effect="dark" :closable="false">
+          <slot name="title">
+            <p class="table-title">软盘信息</p>
+          </slot>
+        </el-alert>
 
-      <div style="margin-top: 10px;">
-        <el-table
-          border
-          :data="SOFT_DISK_Info"
-          highlight-current-row
-          @current-change="handleCurrentChange"
-          style="width: 100%">
-          <el-table-column fixed type="index" width="60"></el-table-column>
-          <el-table-column property="Description" label="Description"></el-table-column>
-          <el-table-column property="DeviceID" label="DeviceID"></el-table-column>
-          <el-table-column property="Status" label="Status"></el-table-column>
-          <el-table-column property="Manufacuturer" label="Manufacuturer"></el-table-column>
-        </el-table>
+        <div style="margin-top: 10px;">
+          <el-table
+            border
+            :data="SOFT_DISK_Info"
+            highlight-current-row
+            @current-change="handleCurrentChange"
+            style="width: 100%">
+            <el-table-column fixed type="index" width="60"></el-table-column>
+            <el-table-column property="Description" label="Description"></el-table-column>
+            <el-table-column property="DeviceID" label="DeviceID"></el-table-column>
+            <el-table-column property="Status" label="Status"></el-table-column>
+            <el-table-column property="Manufacuturer" label="Manufacuturer"></el-table-column>
+          </el-table>
+        </div>
       </div>
-    </div>
 
-    <div class="message-part">
-      <el-alert type="error" effect="dark" :closable="false">
-        <slot name="title">
-          <p class="table-title">CD-ROM信息</p>
-        </slot>
-      </el-alert>
+      <div class="message-part">
+        <el-alert type="error" effect="dark" :closable="false">
+          <slot name="title">
+            <p class="table-title">CD-ROM信息</p>
+          </slot>
+        </el-alert>
 
-      <div style="margin-top: 10px;">
-        <el-table
-          border
-          :data="CDROM_Info"
-          highlight-current-row
-          @current-change="handleCurrentChange"
-          style="width: 100%">
-          <el-table-column fixed type="index" width="60"></el-table-column>
-          <el-table-column property="Caption" label="驱动器名称"></el-table-column>
-          <el-table-column property="Description" label="描述"></el-table-column>
-          <el-table-column property="Drive" label="盘符"></el-table-column>
-          <el-table-column property="Status" label="驱动器状态"></el-table-column>
-          <el-table-column property="MediaLoaded" label="是否在使用"></el-table-column>
-        </el-table>
+        <div style="margin-top: 10px;">
+          <el-table
+            border
+            :data="CDROM_Info"
+            highlight-current-row
+            @current-change="handleCurrentChange"
+            style="width: 100%">
+            <el-table-column fixed type="index" width="60"></el-table-column>
+            <el-table-column property="Caption" label="驱动器名称"></el-table-column>
+            <el-table-column property="Description" label="描述"></el-table-column>
+            <el-table-column property="Drive" label="盘符"></el-table-column>
+            <el-table-column property="Status" label="驱动器状态"></el-table-column>
+            <el-table-column property="MediaLoaded" label="是否在使用"></el-table-column>
+          </el-table>
+        </div>
       </div>
-    </div>
 
-    <div class="message-part">
-      <el-alert type="warning" effect="dark" :closable="false">
-        <slot name="title">
-          <p class="table-title">键盘信息</p>
-        </slot>
-      </el-alert>
+      <div class="message-part">
+        <el-alert type="warning" effect="dark" :closable="false">
+          <slot name="title">
+            <p class="table-title">键盘信息</p>
+          </slot>
+        </el-alert>
 
-      <div style="margin-top: 10px;">
-        <el-table
-          border
-          :data="KEYBOARD_Info"
-          highlight-current-row
-          @current-change="handleCurrentChange"
-          style="width: 100%">
-          <el-table-column fixed type="index" width="60"></el-table-column>
-          <el-table-column property="Description" label="键盘描述"></el-table-column>
-          <el-table-column property="Name" label="键盘名称"></el-table-column>
-          <el-table-column property="Status" label="键盘状态"></el-table-column>
-        </el-table>
+        <div style="margin-top: 10px;">
+          <el-table
+            border
+            :data="KEYBOARD_Info"
+            highlight-current-row
+            @current-change="handleCurrentChange"
+            style="width: 100%">
+            <el-table-column fixed type="index" width="60"></el-table-column>
+            <el-table-column property="Description" label="键盘描述"></el-table-column>
+            <el-table-column property="Name" label="键盘名称"></el-table-column>
+            <el-table-column property="Status" label="键盘状态"></el-table-column>
+          </el-table>
+        </div>
       </div>
     </div>
   </div>
+
 </template>
 
 <script>
