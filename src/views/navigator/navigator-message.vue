@@ -3,7 +3,7 @@
 
     <el-tabs type="border-card">
       <el-tab-pane label="浏览器信息">
-        <create-image target-id="messagePage" image-name="navigatorData"></create-image>
+        <create-image target-id="messagePage" image-name="浏览器信息"></create-image>
 
         <el-table
           border
@@ -18,7 +18,7 @@
         </el-table>
       </el-tab-pane>
       <el-tab-pane label="浏览器插件信息">
-        <create-image target-id="messagePage" image-name="pluginsData"></create-image>
+        <create-image target-id="messagePage" image-name="浏览器插件信息"></create-image>
 
         <el-alert type="success" title="插件信息" effect="dark" :description="tips" :closable="false"></el-alert>
         <div class="plugin-table" style="margin-top: 10px;">

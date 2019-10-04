@@ -2,7 +2,7 @@
   <div id="pcMessage">
     <div style="padding: 20px">
       <div class="message-part">
-        <create-image target-id="pcMessage" image-name="pcData"></create-image>
+        <create-image target-id="pcMessage" image-name="PC信息"></create-image>
 
         <el-alert type="success" effect="dark" :closable="false">
           <slot name="title">
