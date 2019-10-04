@@ -15,12 +15,7 @@
         </el-table>
       </el-tab-pane>
       <el-tab-pane label="浏览器插件信息">
-        <el-alert
-          title="插件信息"
-          type="success"
-          :description="tips"
-        >
-        </el-alert>
+        <el-alert type="success" title="插件信息" effect="dark" :description="tips" :closable="false"></el-alert>
 
         <div class="plugin-table" style="margin-top: 10px;">
           <el-table
@@ -66,37 +61,6 @@ export default {
     handleCurrentChange () {
 
     },
-    getBrowserType () {
-      var userAgent = navigator.userAgent //取得浏览器的userAgent字符串
-      var isOpera = userAgent.indexOf('Opera') > -1
-      //判断是否Opera浏览器
-      if (isOpera) {
-        return 'Opera'
-      }
-
-      //判断是否Firefox浏览器
-      if (userAgent.indexOf('Firefox') > -1) {
-        return 'Firefox'
-      }
-      //判断是否chorme浏览器
-      if (userAgent.indexOf('Chrome') > -1) {
-        return 'Chrome'
-      }
-      //判断是否Safari浏览器
-      if (userAgent.indexOf('Safari') > -1) {
-        return 'Safari'
-      }
-      //判断是否IE浏览器
-      if (userAgent.indexOf('compatible') > -1 && userAgent.indexOf('MSIE') > -1 && !isOpera) {
-        return 'IE'
-      }
-      //判断是否Edge浏览器
-      if (userAgent.indexOf('Trident') > -1) {
-        return 'Edge'
-      }
-
-      return undefined;
-    },
     getPluginInfo () {
       let L = navigator.plugins.length;
       for (let i = 0; i < L; i++) {
@@ -132,8 +96,9 @@ export default {
       // let userProfile = navigator.userProfile // 返回一个UserProfile对象，它存储用户的个人信息（火狐没有）
       let vender = navigator.vender // 浏览器厂商名称（IE、火狐没有）
       let vendorSub = navigator.vendorSub // 关于浏览器厂商更多的信息
-      let webkitPersistentStorage = navigator.webkitPersistentStorage
-      let type = this.getBrowserType() ? this.getBrowserType() + '浏览器' : '暂无信息';
+      let webkitPersistentStorage = navigator.webkitPersistentStorage;
+      let browserMessage = this.$utils.getBrowserInfo();
+      let type = browserMessage.name ? browserMessage.name + '浏览器' : '暂无信息';
 
       function getPluginName() {
         var info = '';

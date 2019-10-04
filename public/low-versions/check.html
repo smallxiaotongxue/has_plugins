@@ -233,8 +233,8 @@
         var properties = service.ExecQuery('SELECT * FROM Win32_Processor')
         var e = new Enumerator(properties)
         var info = '<table border=1>'
-        info +=
-          '<tr bgcolor=\'#CDEDED\' style=\'font-weight: bold;\' ><td width=\'450\' >CPU 信息</td></tr>'
+        info += '<tr bgcolor=\'#CDEDED\' style=\'font-weight: bold;\' ><td width=\'450\' >CPU 信息</td></tr>'
+
         for (; !e.atEnd(); e.moveNext()) {
           var p = e.item()
           info +=

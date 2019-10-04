@@ -8,7 +8,14 @@
         </div>
       </el-header>
       <el-container>
-        <el-scrollbar class="container-left" wrap-class="container-left-wrap" :class="{'slide-hide': isCollapse}">
+        <el-scrollbar
+          class="container-left"
+          wrap-class="container-left-wrap"
+          :class="{
+            'slide-hide': isCollapse,
+            'float-left': isIE9
+          }"
+        >
           <el-menu
             class="menu-class"
             :default-active="onRoutes"
@@ -56,8 +63,14 @@ export default {
     onRoutes () {
       return this.$route.path
     },
+    isIE9 () {
+      return this.$utils.getBrowserInfo().name === 'IE' && Number(this.$utils.getBrowserInfo().version) === 9;
+    }
   },
   components: {
+
+  },
+  mounted () {
 
   },
   methods: {
@@ -81,6 +94,10 @@ export default {
 </style>
 
 <style lang="scss" scoped>
+  .float-left {
+    float: left;
+  }
+
   .home-page {
 
   }
@@ -107,7 +124,6 @@ export default {
     height: calc( 100vh - 61px);
     background: #545c64;
     transition: all 0.3s ease-in-out;
-    flex: 0 0 auto;
     width: 60px;
   }
 

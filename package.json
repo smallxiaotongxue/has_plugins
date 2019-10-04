@@ -61,7 +61,9 @@
       "no-trailing-spaces": "off",
       "space-before-function-paren": "off",
       "spaced-comment": "off",
-      "quotes": "off"
+      "quotes": "off",
+      "camelcase": "off",
+      "padded-blocks": "off"
     },
     "parserOptions": {
       "parser": "babel-eslint"
