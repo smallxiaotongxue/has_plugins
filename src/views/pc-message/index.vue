@@ -1,6 +1,10 @@
 <template>
-  <div class="pc-message">
+  <div class="pc-message" id="pcMessage">
     <div class="message-part">
+      <div class="top-menu">
+        <el-button type="primary" size="small" round @click="html2canvas('navigatorData')">生成图片</el-button>
+      </div>
+
       <el-alert type="success" effect="dark" :closable="false">
         <slot name="title">
           <p class="table-title">CPU信息</p>
@@ -162,16 +166,30 @@
       </div>
     </div>
 
+    <el-dialog
+      title="提示"
+      :visible.sync="imgVisible"
+      width="70%"
+      :before-close="closeDialog">
+      <div class="image-wrap">
+        <img :src="imgSrc" alt="">
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import * as utils from '../../utils/index'
+import html2canvas from 'html2canvas'
+import FileSaver from 'file-saver'
 
 export default {
   name: 'pc-index',
   data: function () {
     return {
+      imgVisible: false,
+      imgSrc: '',
+
       CPU_Info: [],
       SOFT_DISK_Info: [],
       CDROM_Info: [],
@@ -179,23 +197,85 @@ export default {
       MAINBOARD_Info: [],
       RAM_Info: [],
       IP_Info: [],
-    };
+    }
   },
   created () {
 
   },
   mounted () {
-    this.initPage();
+    this.initPage()
   },
   methods: {
     initPage () {
-      this.getCpuInfo();
-      this.getSoftDiskInfo();
-      this.getRomInfo();
-      this.getKeyBoardInfo();
-      this.getMainBoardInfo();
-      this.getRAMInfo();
-      this.getIPInfo();
+      this.getCpuInfo()
+      this.getSoftDiskInfo()
+      this.getRomInfo()
+      this.getKeyBoardInfo()
+      this.getMainBoardInfo()
+      this.getRAMInfo()
+      this.getIPInfo()
+    },
+    closeDialog () {
+      this.imgVisible = false;
+      this.imgSrc = '';
+    },
+    dataURLToBlob (dataURL) {
+      var BASE64_MARKER = ';base64,'
+      var parts
+      var contentType
+      var raw
+
+      if (dataURL.indexOf(BASE64_MARKER) === -1) {
+        parts = dataURL.split(',')
+        contentType = parts[0].split(':')[1]
+        raw = decodeURIComponent(parts[1])
+
+        return new Blob([raw], { type: contentType })
+      }
+
+      parts = dataURL.split(BASE64_MARKER)
+      contentType = parts[0].split(':')[1]
+      raw = window.atob(parts[1])
+      var rawLength = raw.length
+      var uInt8Array = new Uint8Array(rawLength)
+
+      for (var i = 0; i < rawLength; ++i) {
+        uInt8Array[i] = raw.charCodeAt(i)
+      }
+
+      return new Blob([uInt8Array], { type: contentType })
+    },
+    html2canvas (name) {
+      html2canvas(document.getElementById('pcMessage')).then((canvas) => {
+        var a = document.createElement('a');
+        document.body.appendChild(a);
+        var url = canvas.toDataURL();
+        var isSupportDownload = 'download' in document.createElement('a')
+
+        if (!isSupportDownload) {
+          if ('msSaveOrOpenBlob' in navigator) {
+            // Microsoft Edge and Microsoft Internet Explorer 10-11
+            const fileBlob = this.dataURLToBlob(canvas.toDataURL('image/jpeg').replace('image/jpeg', 'image/octet-stream'));
+            const fileName = `${name}.jpg`;
+            FileSaver.saveAs(fileBlob, fileName);
+          } else {
+            // IE9 生成图片展示本地
+            this.imgVisible = true;
+            this.imgSrc = url;
+
+            // a.href = url; // url路径太长不支持
+            // a.target = '_blank';
+            // a.click()
+          }
+        } else {
+          // standard code for Google Chrome, Mozilla Firefox etc
+          a.href = url
+          a.download = name || 'pc-message'
+          a.click()
+        }
+
+        document.body.removeChild(a);
+      })
     },
     getCpuInfo () {
       // eslint-disable-next-line no-undef
@@ -203,11 +283,11 @@ export default {
       let service = locator.ConnectServer('.')
       let properties = service.ExecQuery('SELECT * FROM Win32_Processor')
       // eslint-disable-next-line no-undef
-      let e = new Enumerator(properties);
-      let data = [];
+      let e = new Enumerator(properties)
+      let data = []
 
       for (; !e.atEnd(); e.moveNext()) {
-        let p = e.item();
+        let p = e.item()
         data.push({
           ProcessorID: p.ProcessorID,
           Caption: p.Caption,
@@ -220,7 +300,7 @@ export default {
         })
       }
 
-      this.CPU_Info = data;
+      this.CPU_Info = data
     },
     getSoftDiskInfo () {
       // eslint-disable-next-line no-undef
@@ -232,10 +312,10 @@ export default {
       // eslint-disable-next-line no-undef
       var e = new Enumerator(properties)
 
-      let data = [];
+      let data = []
 
       for (; !e.atEnd(); e.moveNext()) {
-        let p = e.item();
+        let p = e.item()
         data.push({
           Description: p.Description,
           DeviceID: p.DeviceID,
@@ -244,7 +324,7 @@ export default {
         })
       }
 
-      this.SOFT_DISK_Info = data;
+      this.SOFT_DISK_Info = data
     },
     getRomInfo () {
       // eslint-disable-next-line no-undef
@@ -255,10 +335,10 @@ export default {
       // eslint-disable-next-line no-undef
       var e = new Enumerator(properties)
 
-      let data = [];
+      let data = []
 
       for (; !e.atEnd(); e.moveNext()) {
-        let p = e.item();
+        let p = e.item()
         data.push({
           Caption: p.Caption,
           Description: p.Description,
@@ -268,7 +348,7 @@ export default {
         })
       }
 
-      this.CDROM_Info = data;
+      this.CDROM_Info = data
     },
     getKeyBoardInfo () {
       // eslint-disable-next-line no-undef
@@ -279,10 +359,10 @@ export default {
       // eslint-disable-next-line no-undef
       var e = new Enumerator(properties)
 
-      let data = [];
+      let data = []
 
       for (; !e.atEnd(); e.moveNext()) {
-        let p = e.item();
+        let p = e.item()
         data.push({
           Description: p.Description,
           Name: p.Name,
@@ -290,7 +370,7 @@ export default {
         })
       }
 
-      this.KEYBOARD_Info = data;
+      this.KEYBOARD_Info = data
     },
     getMainBoardInfo () {
       // eslint-disable-next-line no-undef
@@ -301,10 +381,10 @@ export default {
       // eslint-disable-next-line no-undef
       var e = new Enumerator(properties)
 
-      let data = [];
+      let data = []
 
       for (; !e.atEnd(); e.moveNext()) {
-        let p = e.item();
+        let p = e.item()
         data.push({
           SerialNumber: p.SerialNumber,
           HostingBoard: p.HostingBoard,
@@ -315,7 +395,7 @@ export default {
         })
       }
 
-      this.MAINBOARD_Info = data;
+      this.MAINBOARD_Info = data
     },
     getRAMInfo () {
       // eslint-disable-next-line no-undef
@@ -323,13 +403,13 @@ export default {
       var service = locator.ConnectServer('.')
       //获取Ram信息
       // eslint-disable-next-line no-undef
-      var system = new Enumerator(service.ExecQuery('SELECT * FROM Win32_ComputerSystem')).item();
-      var physicMenCap = Math.ceil(system.TotalPhysicalMemory / 1024 / 1024);
+      var system = new Enumerator(service.ExecQuery('SELECT * FROM Win32_ComputerSystem')).item()
+      var physicMenCap = Math.ceil(system.TotalPhysicalMemory / 1024 / 1024)
 
       // eslint-disable-next-line no-undef
       var memory = new Enumerator(service.ExecQuery('SELECT * FROM Win32_PhysicalMemory'))
 
-      let mem = [];
+      let mem = []
       for (let i = 0; !memory.atEnd(); memory.moveNext()) {
         mem[i++] = {
           cap: memory.item().Capacity / 1024 / 1024,
@@ -340,16 +420,16 @@ export default {
       // for (let i = 0; i < mem.length; i++) {
       //   sumMem += mem[i].cap;
       // }
-      console.log(mem[0].cap);
-      console.log(mem[1].cap);
+      console.log(mem[0].cap)
+      console.log(mem[1].cap)
       let data = [
         {
           cap: (mem[0].cap + mem[1].cap) + 'M',
           physicMenCap: physicMenCap + 'M'
         }
-      ];
+      ]
 
-      this.RAM_Info = data;
+      this.RAM_Info = data
     },
     getIPInfo () {
       // eslint-disable-next-line no-undef
@@ -360,17 +440,17 @@ export default {
       // eslint-disable-next-line no-undef
       var e = new Enumerator(properties)
 
-      let data = [];
+      let data = []
 
       for (; !e.atEnd(); e.moveNext()) {
-        let p = e.item();
+        let p = e.item()
         data.push({
           MACAddress: p.MACAddress,
           IPAddress: p.IPAddress(0),
         })
       }
 
-      this.IP_Info = data;
+      this.IP_Info = data
     },
 
     handleCurrentChange () {
@@ -378,15 +458,15 @@ export default {
     },
   },
   beforeRouteEnter (to, from, next) {
-    let browser = utils.getBrowserInfo();
+    let browser = utils.getBrowserInfo()
     if ((browser.name !== 'IE' && browser.name !== 'Edge') ||
       (browser.name === 'IE' && typeof Number(browser.version) === 'number' && Number(browser.version) < 9)) {
-      alert('请使用IE浏览器9及其以上打开当前页面');
+      alert('请使用IE浏览器9及其以上打开当前页面')
       next({
         path: from.path
-      });
+      })
     } else {
-      next();
+      next()
     }
   }
 }
@@ -398,13 +478,25 @@ export default {
     margin-bottom: 20px;
   }
 
+  .top-menu {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0 0 10px;
+  }
+
   .table-title {
     font-size: 16px;
     font-weight: bold;
     margin-bottom: 5px;
   }
-</style>
 
-<style scoped>
+  .image-wrap {
+    height: 80vh;
+    padding: 20px;
+    overflow: auto;
 
+    img {
+      width: 100%;
+    }
+  }
 </style>

@@ -116,7 +116,8 @@ export default {
       line-height: 60px;
 
       .header-title {
-        padding: 20px;
+        display: inline-block;
+        margin-left: 20px;
         font-size: 18px;
         font-weight: bold;
         color: #ffffff;
