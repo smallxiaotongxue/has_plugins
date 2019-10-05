@@ -76,7 +76,7 @@ export default {
   },
   methods: {
     aboutAlert () {
-      this.$alert('推荐使用IE10及其以上浏览器打开，若有问题或改进，请联系xhj', '关于', {
+      this.$alert('推荐使用IE10及其以上浏览器打开，若有问题或改进，老母鸡抱空窝', '关于', {
         confirmButtonText: '确定'
       }).catch(() => {});
     },
